@@ -1,0 +1,177 @@
+\ProvidesPackage{worksheet}
+
+\usepackage[onehalfspacing]{setspace}
+\setlength\parindent{0cm}
+\setlength\parskip{1em}
+\usepackage{cmbright}	%sans-serif (+math) font(s)
+\usepackage[OT1]{fontenc}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{natbib}	%citation
+\usepackage[pagebackref=true]{hyperref}	%clickable links
+\usepackage{listings}	%code listings
+\usepackage{color}
+\hypersetup{	%link formatting
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=cyan,
+	citecolor=green,
+	linktoc=page,
+	pdftitle={\@title},
+}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt}
+%\usepackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
+\usepackage[total={16cm, 24cm}]{geometry}
+\usepackage{multirow, multicol, array, tabularx}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\newcommand{\makeheader}[2]{
+	\begin{table}
+		\hrule
+		\vspace{.1cm}
+		\setlength{\tabcolsep}{0cm}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
+			#1 & \multirow{2}{8cm}{\centering #2} & Klasse:\\
+			L. Bung &  & Datum:\\
+		\end{tabular}
+		\hrule
+	\end{table}
+}
+\newcommand{\singletask}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUser & \textbf{Aufgabe #1}\\
+	\end{tabular}
+}
+\newcommand{\partnertask}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUserFriends & \textbf{Aufgabe #1}\\
+	\end{tabular}
+}
+\newcommand{\grouptask}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUsers & \textbf{Aufgabe #1}\\
+	\end{tabular}
+}
+\newcommand{\bonustask}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faPlusCircle & \textbf{Bonusaufgabe #1}\\
+	\end{tabular}
+}
+\newcommand{\testtask}[2]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faDotCircle[regular] & \textbf{Aufgabe #1} & #2\\
+	\end{tabularx}
+}
+\newcommand{\warning}[2]{
+	\setlength{\tabcolsep}{.25cm}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{|m{15.5cm}|}
+		\hline
+		\faExclamationTriangle \hspace{.5cm} {\textbf{#1}}\\
+		#2\\
+		\hline
+	\end{tabular}
+}
+\newcommand{\hint}[2]{
+	\setlength{\tabcolsep}{.25cm}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{|m{15.5cm}|}
+		\hline
+		\faLightbulb[regular] \hspace{.55cm} {\textbf{#1}}\\
+		#2\\
+		\hline
+	\end{tabular}
+}
+
+% Generates an empty box for students to write / draw on.
+% Default length is 4cm, but can be changed using a parameter
+\newcommand{\boxarea}[1][4cm]{
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[gray] (0,0) rectangle (\textwidth-.5cm, #1);
+		\end{tikzpicture}
+	\end{center}
+}
+
+% Generates a checkered space for students to write / draw on.
+% Defaults to 4cm, but length can be changed using a parameter
+\newcommand{\checkered}[1][4cm]{
+	\begin{tikzpicture}
+		\pgfmathparse{floor(\textwidth / 5mm)}
+		\pgfmathsetmacro{\xamount}{\pgfmathresult}
+		\pgfmathparse{floor(#1 / 5mm)}
+		\pgfmathsetmacro{\yamount}{\pgfmathresult}
+		\foreach \x in {1,...,\xamount}
+		\foreach \y in {1,...,\yamount}
+		\pgfmathparse{0 + \x * .5}
+		\pgfmathsetmacro{\xstart}{\pgfmathresult}
+		\pgfmathparse{0 + \y * .5}
+		\pgfmathsetmacro{\ystart}{\pgfmathresult}
+		\draw[gray] (\xstart, \ystart) rectangle +(.5,.5);
+	\end{tikzpicture}
+}
+
+% Generates lines for students to write on.
+% Defaults to 4cm (= 4 lines), but length can be changed using a parameter
+\newcommand{\lines}[1][4cm]{
+	\vspace{.7cm}
+	\begin{tikzpicture}
+		\pgfmathparse{floor(#1 / 1cm)}
+		\pgfmathsetmacro{\amount}{\pgfmathresult}
+		\foreach \n in {1,...,\amount} \draw[gray] (0, \n) -- (\linewidth, \n);
+	\end{tikzpicture}
+	\newline
+}
+
+
+
+% default plotting environment
+\newenvironment{plot}[1][xmin=0, xmax=5.5, ymin=0, ymax=5.5]{
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=center,
+				x=1cm,
+				y=1cm,
+				grid=major,
+				xlabel={$x$},
+				ylabel={$y$},
+				xlabel style={below right},
+				ylabel style={above left},
+				#1]
+			}{
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+}
+
+\lstset{
+	basicstyle=\ttfamily\small,
+	breaklines=true,
+	commentstyle=\color{gray},
+	keywordstyle=\color{blue},
+	stringstyle=\color{red},
+	showstringspaces=false,
+	numbers=left,
+	frame=l,
+	tabsize=2
+}

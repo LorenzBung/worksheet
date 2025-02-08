@@ -1,0 +1,46 @@
+\documentclass[11pt, a4paper, oneside]{article}
+\usepackage{worksheet}
+\usepackage{lipsum}
+
+\begin{document}
+	
+	\makeheader{Fach}{Thema}
+
+	\singletask{1: Lorem ipsum}
+	
+	\lipsum[1]
+	
+	\checkered
+	
+	\partnertask{2: Dolor sit amet}
+	
+	\lipsum[2]
+	\begin{plot}
+		\addplot[domain=0:4.5, samples=100, color=red]{x^2 - 4*x + 5} node[yshift=-2.5cm, xshift=-1cm]{$f(x)$};
+		\addplot[color=blue, ]{1/2*x+1} node[below] (g) {$g(x)$};
+	\end{plot}
+	$$\int_{1}^{3} f(x) dx = \dots?$$
+	\boxarea[3cm]
+	
+	\grouptask{3: consecetuer adipiscing elit}
+	
+	\lipsum[4]
+	
+	\lines[3cm]
+	\lipsum[5]
+	\warning{Warnung: Ut purus elit, vestibulum ut}{\lipsum[1]}
+	
+	\bonustask{4: Bonusaufgabe}
+	
+	\hint{Hinweis}{\lipsum[1]}
+	
+	\testtask{5: Punktevergabe}{(1+2+3 Punkte)}
+	
+	\begin{lstlisting}[language=python]
+sum = 0
+for i in range(0,10):
+    sum += i #this is a comment
+print('The sum is ' + sum)
+	\end{lstlisting}
+	\lipsum[7]
+\end{document}
