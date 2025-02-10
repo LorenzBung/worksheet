@@ -156,11 +156,12 @@
 % Generates an empty box for students to write / draw on.
 % Default length is 4cm, but can be changed using a parameter
 \newcommand{\boxarea}[1][4cm]{
-	\begin{center}
+	\begin{figure}[h]
+		\centering
 		\begin{tikzpicture}
-			\draw[gray] (0,0) rectangle (\textwidth-.5cm, #1);
+			\draw[gray] (0,0) rectangle (\textwidth, #1);
 		\end{tikzpicture}
-	\end{center}
+	\end{figure}
 }
 
 % Generates a checkered space for students to write / draw on.
