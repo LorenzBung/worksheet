@@ -33,6 +33,9 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 
+\newcounter{taskcounter}
+\setcounter{taskcounter}{1}
+
 \newcommand{\makeheader}[2]{
 	\begin{table}
 		\hrule
@@ -46,41 +49,89 @@
 		\hrule
 	\end{table}
 }
-\newcommand{\singletask}[1]{
+\makeatletter
+\newcommand{\singletask}{\@ifstar\@singletaskstar\@singletasknostar}
+\newcommand{\@singletasknostar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUser & \textbf{Aufgabe \thetaskcounter: #1}\\
+	\end{tabular}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@singletaskstar}[1]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
 		\faUser & \textbf{Aufgabe #1}\\
 	\end{tabular}
 }
-\newcommand{\partnertask}[1]{
+\newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
+\newcommand{\@partnertasknostar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUserFriends & \textbf{Aufgabe \thetaskcounter: #1}\\
+	\end{tabular}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@partnertaskstar}[1]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
 		\faUserFriends & \textbf{Aufgabe #1}\\
 	\end{tabular}
 }
-\newcommand{\grouptask}[1]{
+\newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
+\newcommand{\@grouptasknostar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faUsers & \textbf{Aufgabe \thetaskcounter: #1}\\
+	\end{tabular}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@grouptaskstar}[1]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
 		\faUsers & \textbf{Aufgabe #1}\\
 	\end{tabular}
 }
-\newcommand{\bonustask}[1]{
+\newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
+\newcommand{\@bonustasknostar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l}
+		\faPlusCircle & \textbf{Bonusaufgabe \thetaskcounter: #1}\\
+	\end{tabular}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@bonustaskstar}[1]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
 		\faPlusCircle & \textbf{Bonusaufgabe #1}\\
 	\end{tabular}
 }
-\newcommand{\testtask}[2]{
+\newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
+\newcommand{\@testtasknostar}[2]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faDotCircle[regular] & \textbf{Aufgabe \thetaskcounter: #1} & #2\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@testtaskstar}[2]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faDotCircle[regular] & \textbf{Aufgabe #1} & #2\\
 	\end{tabularx}
 }
+\makeatother
+
 \newcommand{\warning}[2]{
 	\setlength{\tabcolsep}{.25cm}
 	\renewcommand{\arraystretch}{1.5}
