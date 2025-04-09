@@ -9,17 +9,17 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{wrapfig}
 \usepackage{pdfpages}
 \usepackage{natbib}	%citation
 \usepackage[pagebackref=true]{hyperref}	%clickable links
+\usepackage[bottom]{footmisc}	%footnotes at bottom of page
 \usepackage{listings}	%code listings
 \usepackage{color}
 \hypersetup{	%link formatting
-	colorlinks=true,
-	linkcolor=blue,
-	filecolor=magenta,      
-	urlcolor=cyan,
-	citecolor=green,
+	allbordercolors={1 0 0},
+	pdfborder={1 1 1},
+	pdfborderstyle={/S/U/W .5},
 	linktoc=page,
 	pdftitle={\@title},
 }
@@ -30,20 +30,24 @@
 \usepackage[total={16cm, 24cm}]{geometry}
 \usepackage{multirow, multicol, array, tabularx}
 \usepackage[ngerman]{babel}
-\usepackage{tikz}
-\usepackage{pgfplots}
+\usepackage{tikz}	% to create graphics
+\usepackage{tkz-euclide}	% Geometric diagram
+\usepackage{pgfplots}	% Plotting
+\usepackage{pgf-umlcd}	% easy UML diagrams in tikz
+\renewcommand{\umlfillcolor}{white}
+\renewcommand{\umldrawcolor}{black}
 
 \newcounter{taskcounter}
 \setcounter{taskcounter}{1}
 
-\newcommand{\makeheader}[2]{
+\newcommand{\makeheader}[3][]{
 	\begin{table}
 		\hrule
 		\vspace{.1cm}
 		\setlength{\tabcolsep}{0cm}
 		\renewcommand{\arraystretch}{1.5}
 		\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
-			#1 & \multirow{2}{8cm}{\centering #2} & Klasse:\\
+			#2 & \multirow{2}{8cm}{\centering #3} & Klasse: #1\\
 			L. Bung &  & Datum:\\
 		\end{tabular}
 		\hrule
@@ -63,7 +67,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
-		\faUser & \textbf{Aufgabe #1}\\
+		\faUser & \textbf{#1}\\
 	\end{tabular}
 }
 \newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
@@ -79,7 +83,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
-		\faUserFriends & \textbf{Aufgabe #1}\\
+		\faUserFriends & \textbf{#1}\\
 	\end{tabular}
 }
 \newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
@@ -95,7 +99,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
-		\faUsers & \textbf{Aufgabe #1}\\
+		\faUsers & \textbf{#1}\\
 	\end{tabular}
 }
 \newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
@@ -111,7 +115,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
-		\faPlusCircle & \textbf{Bonusaufgabe #1}\\
+		\faPlusCircle & \textbf{#1}\\
 	\end{tabular}
 }
 \newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
@@ -127,7 +131,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faDotCircle[regular] & \textbf{Aufgabe #1} & #2\\
+		\faDotCircle[regular] & \textbf{#1} & #2\\
 	\end{tabularx}
 }
 \makeatother
@@ -198,7 +202,8 @@
 
 % default plotting environment
 \newenvironment{plot}[1][xmin=0, xmax=5.5, ymin=0, ymax=5.5]{
-	\begin{center}
+	\begin{figure}[h]
+		\centering
 		\begin{tikzpicture}
 			\begin{axis}[
 				axis lines=center,
@@ -210,10 +215,31 @@
 				xlabel style={below right},
 				ylabel style={above left},
 				#1]
-			}{
+}{
 			\end{axis}
 		\end{tikzpicture}
-	\end{center}
+	\end{figure}
+}
+
+% environment for figures on checkered background
+\newenvironment{checkeredfigure}[1][7cm]{
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\pgfmathparse{floor(\textwidth / 5mm)}
+		\pgfmathsetmacro{\xamount}{\pgfmathresult}
+		\pgfmathparse{floor(#1 / 5mm)}
+		\pgfmathsetmacro{\yamount}{\pgfmathresult}
+		\foreach \x in {1,...,\xamount}
+		\foreach \y in {1,...,\yamount}
+		\pgfmathparse{0 + \x * .5}
+		\pgfmathsetmacro{\xstart}{\pgfmathresult}
+		\pgfmathparse{0 + \y * .5}
+		\pgfmathsetmacro{\ystart}{\pgfmathresult}
+		\draw[gray] (\xstart, \ystart) rectangle +(.5,.5);
+}{
+	\end{tikzpicture}
+\end{figure}
 }
 
 \lstset{
