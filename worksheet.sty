@@ -3,20 +3,22 @@
 \usepackage[onehalfspacing]{setspace}
 \setlength\parindent{0cm}
 \setlength\parskip{1em}
-\usepackage{cmbright}	%sans-serif (+math) font(s)
+\usepackage{cmbright}	% sans-serif (+math) font(s)
 \usepackage[OT1]{fontenc}
 \usepackage{fontawesome5}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{float}	% force figures in place using [H]
 \usepackage{wrapfig}
 \usepackage{pdfpages}
 \usepackage{natbib}	%citation
-\usepackage[pagebackref=true]{hyperref}	%clickable links
-\usepackage[bottom]{footmisc}	%footnotes at bottom of page
-\usepackage{listings}	%code listings
+\usepackage[pagebackref=true]{hyperref}	% clickable links
+\usepackage[bottom]{footmisc}	% footnotes at bottom of page
+\usepackage{titling}	% access to \theauthor etc.
+\usepackage{listings}	% code listings
 \usepackage{color}
-\hypersetup{	%link formatting
+\hypersetup{	% link formatting
 	allbordercolors={1 0 0},
 	pdfborder={1 1 1},
 	pdfborderstyle={/S/U/W .5},
@@ -29,6 +31,7 @@
 %\usepackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
 \usepackage[total={16cm, 24cm}]{geometry}
 \usepackage{multirow, multicol, array, tabularx}
+\usepackage{cancel}
 \usepackage[ngerman]{babel}
 \usepackage{tikz}	% to create graphics
 \usepackage{tkz-euclide}	% Geometric diagram
@@ -36,23 +39,35 @@
 \usepackage{pgf-umlcd}	% easy UML diagrams in tikz
 \renewcommand{\umlfillcolor}{white}
 \renewcommand{\umldrawcolor}{black}
+\renewcommand{\vec}{\overrightarrow}	% better looking vector arrows for long vector names
 
 \newcounter{taskcounter}
 \setcounter{taskcounter}{1}
 
-\newcommand{\makeheader}[3][]{
+\newcommand{\thesubject}{}
+\newcommand{\subject}[1]{
+	\renewcommand{\thesubject}{#1}
+}
+\newcommand{\theclass}{}
+\newcommand{\class}[1]{
+	\renewcommand{\theclass}{#1}
+}
+\date{}
+\newcommand{\makeheader}{
 	\begin{table}
 		\hrule
 		\vspace{.1cm}
 		\setlength{\tabcolsep}{0cm}
 		\renewcommand{\arraystretch}{1.5}
 		\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
-			#2 & \multirow{2}{8cm}{\centering #3} & Klasse: #1\\
-			L. Bung &  & Datum:\\
+			\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Klasse: \theclass\\
+			\theauthor &  & Datum: \thedate\\
 		\end{tabular}
 		\hrule
 	\end{table}
 }
+
+% Define task types
 \makeatletter
 \newcommand{\singletask}{\@ifstar\@singletaskstar\@singletasknostar}
 \newcommand{\@singletasknostar}[1]{
@@ -100,6 +115,22 @@
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabular}{p{1cm} l}
 		\faUsers & \textbf{#1}\\
+	\end{tabular}
+}
+\newcommand{\task}{\@ifstar\@taskstar\@tasknostar}
+\newcommand{\@tasknostar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l r}
+		\faUserPlus & \textbf{Aufgabe \thetaskcounter: #1}\\
+	\end{tabular}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@taskstar}[1]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabular}{p{1cm} l r}
+		\faUserPlus & \textbf{#1}\\
 	\end{tabular}
 }
 \newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
@@ -157,10 +188,13 @@
 	\end{tabular}
 }
 
+
+\newcommand{\faNoCalculator}{$\xcancel{\text{\faCalculator}}$}
+
 % Generates an empty box for students to write / draw on.
 % Default length is 4cm, but can be changed using a parameter
 \newcommand{\boxarea}[1][4cm]{
-	\begin{figure}[h]
+	\begin{figure}[H]
 		\centering
 		\begin{tikzpicture}
 			\draw[gray] (0,0) rectangle (\textwidth, #1);
@@ -202,7 +236,7 @@
 
 % default plotting environment
 \newenvironment{plot}[1][xmin=0, xmax=5.5, ymin=0, ymax=5.5]{
-	\begin{figure}[h]
+	\begin{figure}[H]
 		\centering
 		\begin{tikzpicture}
 			\begin{axis}[
@@ -223,7 +257,7 @@
 
 % environment for figures on checkered background
 \newenvironment{checkeredfigure}[1][7cm]{
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
 		\pgfmathparse{floor(\textwidth / 5mm)}
@@ -246,10 +280,19 @@
 	basicstyle=\ttfamily\small,
 	breaklines=true,
 	commentstyle=\color{gray},
-	keywordstyle=\color{blue},
+	keywordstyle=\bfseries\color{blue},
 	stringstyle=\color{red},
 	showstringspaces=false,
 	numbers=left,
 	frame=l,
-	tabsize=2
+	tabsize=2,
+	literate=%
+		{Ö}{{\"O}}1
+		{Ä}{{\"A}}1
+		{Ü}{{\"U}}1
+		{ß}{{\ss}}1
+		{ü}{{\"u}}1
+		{ä}{{\"a}}1
+		{ö}{{\"o}}1
+		{~}{{\textasciitilde}}1
 }
