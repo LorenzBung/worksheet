@@ -1,23 +1,23 @@
 \ProvidesPackage{worksheet}
 
-\usepackage[onehalfspacing]{setspace}
+\RequirePackage[onehalfspacing]{setspace}
 \setlength\parindent{0cm}
 \setlength\parskip{1em}
-\usepackage{cmbright}	% sans-serif (+math) font(s)
-\usepackage[OT1]{fontenc}
-\usepackage{fontawesome5}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{graphicx}
-\usepackage{float}	% force figures in place using [H]
-\usepackage{wrapfig}
-\usepackage{pdfpages}
-\usepackage{natbib}	%citation
-\usepackage[pagebackref=true]{hyperref}	% clickable links
-\usepackage[bottom]{footmisc}	% footnotes at bottom of page
-\usepackage{titling}	% access to \theauthor etc.
-\usepackage{listings}	% code listings
-\usepackage{color}
+\RequirePackage{cmbright}	% sans-serif (+math) font(s)
+\RequirePackage[OT1]{fontenc}
+\RequirePackage{fontawesome5}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{graphicx}
+\RequirePackage{float}	% force figures in place using [H]
+\RequirePackage{wrapfig}
+\RequirePackage{pdfpages}
+\RequirePackage{natbib}	%citation
+\RequirePackage[pagebackref=true]{hyperref}	% clickable links
+\RequirePackage[bottom]{footmisc}	% footnotes at bottom of page
+\RequirePackage{titling}	% access to \theauthor etc.
+\RequirePackage{listings}	% code listings
+\RequirePackage{color}
 \hypersetup{	% link formatting
 	allbordercolors={1 0 0},
 	pdfborder={1 1 1},
@@ -25,18 +25,18 @@
 	linktoc=page,
 	pdftitle={\@title},
 }
-\usepackage{enumitem}
+\RequirePackage{enumitem}
 \setlist[itemize]{noitemsep, topsep=0pt}
 \setlist[enumerate]{noitemsep, topsep=0pt}
-%\usepackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
-\usepackage[total={16cm, 24cm}]{geometry}
-\usepackage{multirow, multicol, array, tabularx}
-\usepackage{cancel}
-\usepackage[ngerman]{babel}
-\usepackage{tikz}	% to create graphics
-\usepackage{tkz-euclide}	% Geometric diagram
-\usepackage{pgfplots}	% Plotting
-\usepackage{pgf-umlcd}	% easy UML diagrams in tikz
+%\RequirePackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
+\RequirePackage[total={16cm, 24cm}]{geometry}
+\RequirePackage{multirow, multicol, array, tabularx}
+\RequirePackage{cancel}
+\RequirePackage[ngerman]{babel}
+\RequirePackage{tikz}	% to create graphics
+\RequirePackage{tkz-euclide}	% Geometric diagram
+\RequirePackage{pgfplots}	% Plotting
+\RequirePackage{pgf-umlcd}	% easy UML diagrams in tikz
 \renewcommand{\umlfillcolor}{white}
 \renewcommand{\umldrawcolor}{black}
 \renewcommand{\vec}{\overrightarrow}	% better looking vector arrows for long vector names
@@ -70,99 +70,99 @@
 % Define task types
 \makeatletter
 \newcommand{\singletask}{\@ifstar\@singletaskstar\@singletasknostar}
-\newcommand{\@singletasknostar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUser & \textbf{Aufgabe \thetaskcounter: #1}\\
-	\end{tabular}
-	\stepcounter{taskcounter}
-}
-\newcommand{\@singletaskstar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUser & \textbf{#1}\\
-	\end{tabular}
-}
-\newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
-\newcommand{\@partnertasknostar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUserFriends & \textbf{Aufgabe \thetaskcounter: #1}\\
-	\end{tabular}
-	\stepcounter{taskcounter}
-}
-\newcommand{\@partnertaskstar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUserFriends & \textbf{#1}\\
-	\end{tabular}
-}
-\newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
-\newcommand{\@grouptasknostar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUsers & \textbf{Aufgabe \thetaskcounter: #1}\\
-	\end{tabular}
-	\stepcounter{taskcounter}
-}
-\newcommand{\@grouptaskstar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faUsers & \textbf{#1}\\
-	\end{tabular}
-}
-\newcommand{\task}{\@ifstar\@taskstar\@tasknostar}
-\newcommand{\@tasknostar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l r}
-		\faUserPlus & \textbf{Aufgabe \thetaskcounter: #1}\\
-	\end{tabular}
-	\stepcounter{taskcounter}
-}
-\newcommand{\@taskstar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l r}
-		\faUserPlus & \textbf{#1}\\
-	\end{tabular}
-}
-\newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
-\newcommand{\@bonustasknostar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faPlusCircle & \textbf{Bonusaufgabe \thetaskcounter: #1}\\
-	\end{tabular}
-	\stepcounter{taskcounter}
-}
-\newcommand{\@bonustaskstar}[1]{
-	\vspace*{.5cm}
-	\setlength{\tabcolsep}{0cm}
-	\begin{tabular}{p{1cm} l}
-		\faPlusCircle & \textbf{#1}\\
-	\end{tabular}
-}
-\newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
-\newcommand{\@testtasknostar}[2]{
+\newcommand{\@singletasknostar}[2][]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faDotCircle[regular] & \textbf{Aufgabe \thetaskcounter: #1} & #2\\
+		\faUser & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 }
-\newcommand{\@testtaskstar}[2]{
+\newcommand{\@singletaskstar}[2][]{
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faDotCircle[regular] & \textbf{#1} & #2\\
+		\faUser & \textbf{#2} & #1\\
+	\end{tabularx}
+}
+\newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
+\newcommand{\@partnertasknostar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUserFriends & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@partnertaskstar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUserFriends & \textbf{#2} & #1\\
+	\end{tabularx}
+}
+\newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
+\newcommand{\@grouptasknostar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUsers & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@grouptaskstar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUsers & \textbf{#2} & #1\\
+	\end{tabularx}
+}
+\newcommand{\task}{\@ifstar\@taskstar\@tasknostar}
+\newcommand{\@tasknostar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUserPlus & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@taskstar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faUserPlus & \textbf{#2} & #1\\
+	\end{tabularx}
+}
+\newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
+\newcommand{\@bonustasknostar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faPlusCircle & \textbf{Bonusaufgabe \thetaskcounter: #2} & #1\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@bonustaskstar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faPlusCircle & \textbf{#2} & #1\\
+	\end{tabularx}
+}
+\newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
+\newcommand{\@testtasknostar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faDotCircle[regular] & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+	\end{tabularx}
+	\stepcounter{taskcounter}
+}
+\newcommand{\@testtaskstar}[2][]{
+	\vspace*{.5cm}
+	\setlength{\tabcolsep}{0cm}
+	\begin{tabularx}{\textwidth}{p{1cm} X r}
+		\faDotCircle[regular] & \textbf{#2} & #1\\
 	\end{tabularx}
 }
 \makeatother
