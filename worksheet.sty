@@ -66,6 +66,21 @@
 		\hrule
 	\end{table}
 }
+\newcommand{\testheader}[2][]{
+	\begin{table}
+		\centering
+		\vspace{-.425cm}
+		\renewcommand{\arraystretch}{2.5}
+		\begin{tabularx}{\textwidth}{X X | X X}
+			\textbf{Name}: & & \textbf{Mündliche Note}: &\\
+			\hline
+			\textbf{Erreichte Punkte}: & \hspace{2cm} / #1 & \textbf{Note}: &\\
+			\hline
+		\end{tabularx}
+	\end{table}
+
+	#2
+}
 
 % Define task types
 \makeatletter
@@ -77,6 +92,7 @@
 		\faUser & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@singletaskstar}[2][]{
 	\vspace*{.5cm}
@@ -84,6 +100,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUser & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
 \newcommand{\@partnertasknostar}[2][]{
@@ -93,6 +110,7 @@
 		\faUserFriends & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@partnertaskstar}[2][]{
 	\vspace*{.5cm}
@@ -100,6 +118,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUserFriends & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
 \newcommand{\@grouptasknostar}[2][]{
@@ -109,6 +128,7 @@
 		\faUsers & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@grouptaskstar}[2][]{
 	\vspace*{.5cm}
@@ -116,6 +136,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUsers & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \newcommand{\task}{\@ifstar\@taskstar\@tasknostar}
 \newcommand{\@tasknostar}[2][]{
@@ -125,6 +146,7 @@
 		\faUserPlus & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@taskstar}[2][]{
 	\vspace*{.5cm}
@@ -132,6 +154,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUserPlus & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
 \newcommand{\@bonustasknostar}[2][]{
@@ -141,6 +164,7 @@
 		\faPlusCircle & \textbf{Bonusaufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@bonustaskstar}[2][]{
 	\vspace*{.5cm}
@@ -148,6 +172,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faPlusCircle & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
 \newcommand{\@testtasknostar}[2][]{
@@ -157,6 +182,7 @@
 		\faDotCircle[regular] & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
+	\vspace*{-.5cm}
 }
 \newcommand{\@testtaskstar}[2][]{
 	\vspace*{.5cm}
@@ -164,6 +190,7 @@
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faDotCircle[regular] & \textbf{#2} & #1\\
 	\end{tabularx}
+	\vspace*{-.5cm}
 }
 \makeatother
 
