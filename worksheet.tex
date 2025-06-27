@@ -1,0 +1,196 @@
+\documentclass[11pt, a4paper, oneside]{article}
+\usepackage{worksheet}
+\usepackage{lipsum}
+
+\begin{document}
+	\begin{table}
+	\hrule
+	\vspace{.1cm}
+	\setlength{\tabcolsep}{0cm}
+	\renewcommand{\arraystretch}{1.5}
+	\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
+		\multirow{2}{4cm}{L. Bung} & \multirow{2}{8cm}{\centering The worksheet package} & \multirow{2}{4cm}{\today} \\\\
+	\end{tabular}
+	\hrule
+	\end{table}
+	
+	This document aims to provide an overview for the usage of the \texttt{worksheet} package.
+	The goal of the package is to simplify the creation of optically pleasing worksheets and class tests used in school environments.
+	
+	Please note that the code is still in development and subject to -- possibly breaking -- changes.
+	
+	\section*{Document header}
+	
+	The header of the document uses the default \LaTeX\ command \texttt{\textbackslash maketitle}.
+	However, the commands used to add information to the header vary from the defaults:
+	\begin{itemize}[label=]
+		\item \texttt{\textbackslash author}: Used to set the name of the teacher, such as ``John Doe''
+		\item \texttt{\textbackslash date}: Mainly used for class tests, used to add a date to the document
+		\item \texttt{\textbackslash title}: The topic of the worksheet -- generally, the title of the document
+		\item \texttt{\textbackslash subject}: Used to set the subject of the class, for example ``Mathematics''
+		\item \texttt{\textbackslash class}: The name of the class, such as 9a) or BG11
+	\end{itemize}
+	All of the above arguments can be left empty.
+	
+	The document header can be generated using \texttt{\textbackslash maketitle}.
+	When creating a class test, the additional command \texttt{\textbackslash testheader[points]\{remarks\}} can be used to append a grading template to the header.
+	The optional argument \texttt{points} can be used to specify the maximum amount of points that can be attained.
+	In \texttt{remarks}, additional information about the test can be specified, such as available time or permitted aids.
+	
+	\section*{Tasks} 
+	
+	A key part of worksheets or class tests are the tasks.
+	This package provides several commands for that:
+	\begin{itemize}[label=]
+		\item \texttt{\textbackslash singletask}: A task to be completed alone
+		\item \texttt{\textbackslash partnertask}: A task to be done in pairs (not in groups!)
+		\item \texttt{\textbackslash grouptask}: A task to be done in groups of multiple students
+		\item \texttt{\textbackslash bonustask}: An additional task that can be done by fast or strong students, but doesn't have to
+		\item \texttt{\textbackslash testtask}: For tasks in class tests
+	\end{itemize}
+	The only difference between the different task types is the icon generated along them.
+	
+	All task commands follow the same pattern: \texttt{\textbackslash tasktype[points]\{title\}}.
+	The optional value provided in \texttt{points} can be used to add points to class tests, but also to add a time (or any text, for that matter) to a task.
+	
+	Each task command also comes with a starred version (e.g. \texttt{\textbackslash singletask*}), with the difference being that starred tasks won't be enumerated.
+	Note that the counter also won't be incremented in that case.
+	
+	\section*{Writing areas}
+	
+	In many cases, tasks are supposed to be completed right on the worksheet or class test  paper itself.
+	For that reason, space has to be provided for students to write or draw on.
+	Currently, the following frequent types of writing areas are provided:
+	\begin{itemize}[label=]
+		\item \texttt{\textbackslash lines}: Basic lines spaced 1cm apart to give textual answers
+		\item \texttt{\textbackslash checkered}: A checkered area for graphing, technical drawings or the like
+		\item \texttt{\textbackslash boxarea}: A free-form box, usable for drawings, diagrams or anything else
+	\end{itemize}
+	All of the commands follow the pattern \texttt{\textbackslash areatype[length]}.
+	The optional parameter \texttt{length} can be used to specify the vertical length of the area.
+	Lines will get clipped in 1cm steps and checkered areas to 5mm steps, while box areas can have any length.
+	In case no length is provided, the default length for writing areas is 4cm.
+	All areas span have the width of \texttt{\textbackslash textwidth}.
+	
+	\section*{Hints and warnings}
+	
+	When creating information material, it is often useful to highlight certain things.
+	There are currently the following options for that:
+	\begin{itemize}[label=]
+		\item \texttt{\textbackslash hint}: Hints for solving tasks or helpful information. Denoted by a lightbulb icon
+		\item \texttt{\textbackslash warning}: Warnings and important alerts. Denoted by an exclamation mark
+	\end{itemize}
+	Again, the commands follow the same pattern: \texttt{\textbackslash command\{title\}\{body\}}.
+	\texttt{title} will be printed in the first line next to the icon in bold text.
+	The content of \texttt{body} is the text displayed inside of the box.
+	
+	\section*{Environments specific to computer science}
+	
+	There is a wide spectrum of \LaTeX\ packages for the various use cases of computer science.
+	Although one of the paradigms of this package is to remain as minimal as possible, certain packages are included in order to add sensible defaults.
+	The following list is supposed to show an overview of what is possible:
+	\begin{enumerate}
+		\item \textbf{Code listings}.
+		The widespread package \texttt{listings}\footnote{\url{https://ctan.org/pkg/listings}} provides many useful options for code listings.
+		Certain options, such as colors, line numbers and the like are set to default values by this package in order to blend in nicely with the rest of the document.
+		\item \textbf{UML diagrams}.
+		UML diagrams can be drawn with TikZ using the \texttt{pgf-umlcd}\footnote{\url{https://ctan.org/pkg/pgf-umlcd}} package.
+	\end{enumerate}
+
+	\section*{Environments specific to mathematics}
+	
+	Of course, \LaTeX\ already has great support for mathematical expressions out of the box.
+	This functionality can be greatly expanded by the use of packages.
+	Again, the following list only shows excerpts of what is possible:
+	\begin{enumerate}
+		\item \textbf{Vector-based graphics}.
+		Instead of using image files, it is often preferable to use well-scaling vector-based graphics.
+		In \LaTeX, this can be achieved using TikZ \& PGF\footnote{\url{https://www.ctan.org/pkg/tikz}}.
+		The base functionality can also be expanded, for example for geometry purposes using \texttt{tkz-euclide}\footnote{\url{https://www.ctan.org/pkg/tkz-euclide}}.
+		\item \textbf{Plotting}.
+		To create TikZ-based plots, the package \texttt{pgfplots}\footnote{\url{https://www.ctan.org/pkg/pgfplots}} can be used.
+		The \texttt{worksheet} package already creates some sensible defaults for plots, but it is often necessary to adjust them.
+		Also, the additional environment \texttt{checkeredfigure} can be used to create TikZ graphics in front of a checkered background.
+	\end{enumerate}
+	
+	\section*{Language support}
+	
+	Currently supported languages are german and english.
+	The package checks for the loaded \texttt{babel} class and translates accordingly in the necessary regions.
+	If the language is not recognized, it defaults to english.
+	
+	\pagebreak
+	
+	\author{John Doe}
+	\title{Class Test \#1}
+	\subject{Mathematics}
+	\class{9a)}
+	\date{31.05.2025}
+	\maketitle
+	\testheader[60]{Additional information for the class test go here.}
+
+	\singletask{Lorem ipsum}
+	
+	\lipsum[1]
+	
+	\checkered
+	
+	\partnertask{Dolor sit amet}
+	
+	\lipsum[2]
+	\begin{plot}
+		\addplot[domain=0:4.5, samples=100, color=red]{x^2 - 4*x + 5} node[yshift=-2.5cm, xshift=-1cm]{$f(x)$};
+		\addplot[color=blue, ]{1/2*x+1} node[below] (g) {$g(x)$};
+	\end{plot}
+	$$\int_{1}^{3} f(x) dx = \dots?$$
+	\boxarea[3cm]
+	
+	\grouptask{consecetuer adipiscing elit}
+	
+	\lipsum[4]
+	
+	\lines[3cm]
+	\lipsum[5]
+	
+	\warning{Warning: Ut purus elit, vestibulum ut}{\lipsum[1]}
+	
+	\singletask*{No task enumeration}
+	
+	\lipsum[4]
+	
+	\bonustask{An additional task}
+	
+	\hint{Hint}{\lipsum[1]}
+	
+	\testtask[(1+2+3 Punkte)]{A class test task with additional points awarded}
+	
+	\begin{lstlisting}[language=python]
+sum = 0
+for i in range(0,10):
+    sum += i #this is a comment
+print('The sum is ' + sum)
+	\end{lstlisting}
+
+	\lipsum[7]
+
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\begin{class}[text width=5cm]{SuperClass}{3,3}
+				\attribute{+attribute1: String}
+				\attribute{-attribute2: int}
+				\operation{+operation(param1: int)}
+			\end{class}
+			\begin{class}[text width=5cm]{SubClass1}{0,0}
+				\inherit{SuperClass}
+				\attribute{+attribute3: bool}
+				\operation{+operation2()}
+			\end{class}
+			\begin{class}[text width=5cm]{SubClass2}{6,0}
+				\inherit{SuperClass}
+				\attribute{+attribute4: float}
+				\operation{+operation3(param1: String)}
+			\end{class}
+		\end{tikzpicture}
+	\end{figure}
+\end{document}

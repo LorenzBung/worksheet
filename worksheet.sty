@@ -1,5 +1,6 @@
-\ProvidesPackage{worksheet}
+\ProvidesPackage{worksheet}[2025/06/27 Package to create worksheets and class tests for usage in schools]
 
+\RequirePackage{ifthen}	% for internal use
 \RequirePackage[onehalfspacing]{setspace}
 \setlength\parindent{0cm}
 \setlength\parskip{1em}
@@ -28,15 +29,15 @@
 \RequirePackage{enumitem}
 \setlist[itemize]{noitemsep, topsep=0pt}
 \setlist[enumerate]{noitemsep, topsep=0pt}
-%\RequirePackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
 \RequirePackage[total={16cm, 24cm}]{geometry}
 \RequirePackage{multirow, multicol, array, tabularx}
 \RequirePackage{cancel}
-\RequirePackage[ngerman]{babel}
 \RequirePackage{tikz}	% to create graphics
+\usetikzlibrary{babel}	% fixes compatibility with tikz and babel
 \RequirePackage{tkz-euclide}	% Geometric diagram
 \RequirePackage{pgfplots}	% Plotting
 \RequirePackage{pgf-umlcd}	% easy UML diagrams in tikz
+
 \renewcommand{\umlfillcolor}{white}
 \renewcommand{\umldrawcolor}{black}
 \renewcommand{\vec}{\overrightarrow}	% better looking vector arrows for long vector names
@@ -53,6 +54,14 @@
 	\renewcommand{\theclass}{#1}
 }
 \date{}
+
+\newcommand{\@taskText}{
+	\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{Aufgabe}{Task}
+}
+\newcommand{\@bonusTaskText}{
+	\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{Bonusaufgabe}{Bonus task}
+}
+
 \renewcommand{\maketitle}{
 	\begin{table}
 		\hrule
@@ -60,8 +69,13 @@
 		\setlength{\tabcolsep}{0cm}
 		\renewcommand{\arraystretch}{1.5}
 		\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
-			\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Klasse: \theclass\\
-			\theauthor &  & Datum: \thedate\\
+			\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{
+				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Klasse: \theclass\\
+				\theauthor &  & Datum: \thedate\\
+			}{
+				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Class: \theclass\\
+				\theauthor &  & Date: \thedate\\
+			}
 		\end{tabular}
 		\hrule
 	\end{table}
@@ -72,10 +86,17 @@
 		\vspace{-.425cm}
 		\renewcommand{\arraystretch}{2.5}
 		\begin{tabularx}{\textwidth}{X X | X X}
-			\textbf{Name}: & & \textbf{Mündliche Note}: &\\
-			\hline
-			\textbf{Erreichte Punkte}: & \hspace{2cm} / #1 & \textbf{Note}: &\\
-			\hline
+			\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{
+				\textbf{Name}: & & \textbf{Mündliche Note}: &\\
+				\hline
+				\textbf{Erreichte Punkte}: & \hspace{2cm} / #1 & \textbf{Note}: &\\
+				\hline
+			}{
+				\textbf{Name}: & & \textbf{Oral Grade}: &\\
+				\hline
+				\textbf{Points achieved}: & \hspace{2cm} / #1 & \textbf{Grade}: &\\
+				\hline
+			}
 		\end{tabularx}
 	\end{table}
 
@@ -89,7 +110,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faUser & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+		\faUser & \textbf{\@taskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
@@ -107,7 +128,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faUserFriends & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+		\faUserFriends & \textbf{\@taskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
@@ -125,7 +146,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faUsers & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+		\faUsers & \textbf{\@taskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
@@ -143,7 +164,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faUserPlus & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+		\faUserPlus & \textbf{\@taskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
@@ -161,7 +182,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faPlusCircle & \textbf{Bonusaufgabe \thetaskcounter: #2} & #1\\
+		\faPlusCircle & \textbf{\@bonusTaskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
@@ -179,7 +200,7 @@
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
-		\faDotCircle[regular] & \textbf{Aufgabe \thetaskcounter: #2} & #1\\
+		\faDotCircle[regular] & \textbf{\@taskText \thetaskcounter: #2} & #1\\
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
