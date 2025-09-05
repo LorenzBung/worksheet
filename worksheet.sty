@@ -1,4 +1,4 @@
-\ProvidesPackage{worksheet}[2025/06/27 Package to create worksheets and class tests for usage in schools]
+\ProvidesPackage{worksheet}[2025/09/05 Package to create worksheets and class tests for usage in schools]
 
 \RequirePackage{ifthen}	% for internal use
 \RequirePackage[onehalfspacing]{setspace}
@@ -12,11 +12,14 @@
 \RequirePackage{graphicx}
 \RequirePackage{float}	% force figures in place using [H]
 \RequirePackage{wrapfig}
+\RequirePackage{subcaption}
 \RequirePackage{pdfpages}
 \RequirePackage{natbib}	%citation
-\RequirePackage[pagebackref=true]{hyperref}	% clickable links
+\@ifclassloaded{beamer}{}{
+	\RequirePackage[pagebackref=true]{hyperref}	% clickable links
+	\RequirePackage{titling}	% access to \theauthor etc.
+}
 \RequirePackage[bottom]{footmisc}	% footnotes at bottom of page
-\RequirePackage{titling}	% access to \theauthor etc.
 \RequirePackage{listings}	% code listings
 \RequirePackage{color}
 \hypersetup{	% link formatting
@@ -26,16 +29,20 @@
 	linktoc=page,
 	pdftitle={\@title},
 }
-\RequirePackage{enumitem}
-\setlist[itemize]{noitemsep, topsep=0pt}
-\setlist[enumerate]{noitemsep, topsep=0pt}
-\RequirePackage[total={16cm, 24cm}]{geometry}
+\@ifclassloaded{beamer}{}{	%Avoid package collisions when using beamer class
+	\RequirePackage{enumitem}
+	\setlist[itemize]{noitemsep, topsep=0pt}
+	\setlist[enumerate]{noitemsep, topsep=0pt}
+	\RequirePackage[total={16cm, 24cm}]{geometry}
+}
 \RequirePackage{multirow, multicol, array, tabularx}
 \RequirePackage{cancel}
 \RequirePackage{tikz}	% to create graphics
 \usetikzlibrary{babel}	% fixes compatibility with tikz and babel
 \RequirePackage{tkz-euclide}	% Geometric diagram
+\usepackage{tikz-3dplot}	% 3D coordinates
 \RequirePackage{pgfplots}	% Plotting
+\pgfplotsset{compat=1.18}
 \RequirePackage{pgf-umlcd}	% easy UML diagrams in tikz
 
 \renewcommand{\umlfillcolor}{white}
@@ -45,15 +52,17 @@
 \newcounter{taskcounter}
 \setcounter{taskcounter}{1}
 
-\newcommand{\thesubject}{}
-\newcommand{\subject}[1]{
-	\renewcommand{\thesubject}{#1}
+\@ifclassloaded{beamer}{}{	%Avoid package collisions when using beamer class
+	\newcommand{\thesubject}{}
+	\newcommand{\subject}[1]{
+		\renewcommand{\thesubject}{#1}
+	}
+	\newcommand{\theclass}{}
+	\newcommand{\class}[1]{
+		\renewcommand{\theclass}{#1}
+	}
 }
-\newcommand{\theclass}{}
-\newcommand{\class}[1]{
-	\renewcommand{\theclass}{#1}
-}
-\date{}
+\date{ }	% defaults date to empty string
 
 \newcommand{\@taskText}{
 	\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{Aufgabe}{Task}
@@ -62,46 +71,57 @@
 	\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{Bonusaufgabe}{Bonus task}
 }
 
-\renewcommand{\maketitle}{
-	\begin{table}
+\makeatletter
+\@ifclassloaded{beamer}{}{	%Avoid package collisions when using beamer class
+	\renewcommand{\maketitle}{%
+		\if@twocolumn
+		\twocolumn[{\@maketitle}]
+		\else
+		{\@maketitle}
+		\fi
+	}
+	\renewcommand{\@maketitle}{
+		\begingroup
 		\hrule
-		\vspace{.1cm}
+		\vspace{-.25cm}
 		\setlength{\tabcolsep}{0cm}
-		\renewcommand{\arraystretch}{1.5}
+		\renewcommand{\arraystretch}{1.2}
 		\begin{tabular}{p{4cm} >{\Large\bfseries}p{8cm} p{4cm}}
 			\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{
-				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Klasse: \theclass\\
-				\theauthor &  & Datum: \thedate\\
+				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & \ifthenelse{\equal{\theclass}{}}{}{Klasse: \theclass}\\
+				\theauthor &  & \ifthenelse{\equal{\thedate}{}}{}{Datum: \thedate}\\
 			}{
-				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & Class: \theclass\\
-				\theauthor &  & Date: \thedate\\
+				\thesubject & \multirow{2}{8cm}{\centering \thetitle} & \ifthenelse{\equal{\theclass}{}}{}{Class: \theclass}\\
+				\theauthor &  & \ifthenelse{\equal{\thedate}{}}{}{Date: \thedate}\\
 			}
 		\end{tabular}
 		\hrule
-	\end{table}
-}
-\newcommand{\testheader}[2][]{
-	\begin{table}
-		\centering
-		\vspace{-.425cm}
+		\vspace{.5cm}
+		\endgroup
+	}
+	\newcommand{\testheader}[2][]{
+		\begingroup
+		\vspace*{-.88cm}
 		\renewcommand{\arraystretch}{2.5}
 		\begin{tabularx}{\textwidth}{X X | X X}
 			\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{
-				\textbf{Name}: & & \textbf{Mündliche Note}: &\\
+				\textbf{Name}: & & \textbf{Mündliche Note}: & \\
 				\hline
-				\textbf{Erreichte Punkte}: & \hspace{2cm} / #1 & \textbf{Note}: &\\
+				\textbf{Erreichte Punkte}: & \hspace{2cm} / #1 & \textbf{Note}: & \\
 				\hline
 			}{
-				\textbf{Name}: & & \textbf{Oral Grade}: &\\
+				\textbf{Name}: & & \textbf{Oral Grade}: & \\
 				\hline
-				\textbf{Points achieved}: & \hspace{2cm} / #1 & \textbf{Grade}: &\\
+				\textbf{Points achieved}: & \hspace{2cm} / #1 & \textbf{Grade}: & \\
 				\hline
 			}
 		\end{tabularx}
-	\end{table}
-
-	#2
+		\par
+		#2
+		\endgroup
+	}
 }
+\makeatother
 
 % Define task types
 \makeatletter
@@ -297,7 +317,7 @@
 				xlabel style={below right},
 				ylabel style={above left},
 				#1]
-}{
+			}{
 			\end{axis}
 		\end{tikzpicture}
 	\end{figure}
@@ -305,23 +325,23 @@
 
 % environment for figures on checkered background
 \newenvironment{checkeredfigure}[1][7cm]{
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\pgfmathparse{floor(\textwidth / 5mm)}
-		\pgfmathsetmacro{\xamount}{\pgfmathresult}
-		\pgfmathparse{floor(#1 / 5mm)}
-		\pgfmathsetmacro{\yamount}{\pgfmathresult}
-		\foreach \x in {1,...,\xamount}
-		\foreach \y in {1,...,\yamount}
-		\pgfmathparse{0 + \x * .5}
-		\pgfmathsetmacro{\xstart}{\pgfmathresult}
-		\pgfmathparse{0 + \y * .5}
-		\pgfmathsetmacro{\ystart}{\pgfmathresult}
-		\draw[gray] (\xstart, \ystart) rectangle +(.5,.5);
-}{
-	\end{tikzpicture}
-\end{figure}
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\pgfmathparse{floor(\textwidth / 5mm)}
+			\pgfmathsetmacro{\xamount}{\pgfmathresult}
+			\pgfmathparse{floor(#1 / 5mm)}
+			\pgfmathsetmacro{\yamount}{\pgfmathresult}
+			\foreach \x in {1,...,\xamount}
+			\foreach \y in {1,...,\yamount}
+			\pgfmathparse{0 + \x * .5}
+			\pgfmathsetmacro{\xstart}{\pgfmathresult}
+			\pgfmathparse{0 + \y * .5}
+			\pgfmathsetmacro{\ystart}{\pgfmathresult}
+			\draw[gray] (\xstart, \ystart) rectangle +(.5,.5);
+		}{
+		\end{tikzpicture}
+	\end{figure}
 }
 
 \lstset{
@@ -335,12 +355,32 @@
 	frame=l,
 	tabsize=2,
 	literate=%
-		{Ö}{{\"O}}1
-		{Ä}{{\"A}}1
-		{Ü}{{\"U}}1
-		{ß}{{\ss}}1
-		{ü}{{\"u}}1
-		{ä}{{\"a}}1
-		{ö}{{\"o}}1
-		{~}{{\textasciitilde}}1
+	{Ö}{{\"O}}1
+	{Ä}{{\"A}}1
+	{Ü}{{\"U}}1
+	{ß}{{\ss}}1
+	{ü}{{\"u}}1
+	{ä}{{\"a}}1
+	{ö}{{\"o}}1
+	{~}{{\textasciitilde}}1
 }
+
+\makeatletter
+\@ifclassloaded{beamer}{
+	\usecolortheme[named=black]{structure}
+	\setbeamerfont{frametitle}{series=\bfseries}
+	\setbeamertemplate{navigation symbols}{}
+	\setbeamertemplate{frametitle}
+	{
+		\vspace*{.25cm}
+		\hrule
+		\vspace*{.25cm}
+		\textbf{\insertframetitle}
+		\par
+		\small\textbf{\insertframesubtitle}
+		\par
+		\vspace{.25cm}
+		\hrule
+	}
+}{}
+\makeatother
