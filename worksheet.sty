@@ -22,28 +22,30 @@
 \RequirePackage[bottom]{footmisc}	% footnotes at bottom of page
 \RequirePackage{listings}	% code listings
 \RequirePackage{color}
-\hypersetup{	% link formatting
-	allbordercolors={1 0 0},
-	pdfborder={1 1 1},
-	pdfborderstyle={/S/U/W .5},
-	linktoc=page,
-	pdftitle={\@title},
-}
 \@ifclassloaded{beamer}{}{	%Avoid package collisions when using beamer class
 	\RequirePackage{enumitem}
 	\setlist[itemize]{noitemsep, topsep=0pt}
 	\setlist[enumerate]{noitemsep, topsep=0pt}
 	\RequirePackage[total={16cm, 24cm}]{geometry}
+	\hypersetup{	% link formatting
+		allbordercolors={1 0 0},
+		pdfborder={1 1 1},
+		pdfborderstyle={/S/U/W .5},
+		linktoc=page,
+		pdftitle={\@title},
+	}
 }
 \RequirePackage{multirow, multicol, array, tabularx}
 \RequirePackage{cancel}
 \RequirePackage{tikz}	% to create graphics
 \usetikzlibrary{babel}	% fixes compatibility with tikz and babel
+\usetikzlibrary{er}	% ER modeling
 \RequirePackage{tkz-euclide}	% Geometric diagram
 \usepackage{tikz-3dplot}	% 3D coordinates
 \RequirePackage{pgfplots}	% Plotting
 \pgfplotsset{compat=1.18}
 \RequirePackage{pgf-umlcd}	% easy UML diagrams in tikz
+\RequirePackage{qrcode}
 
 \renewcommand{\umlfillcolor}{white}
 \renewcommand{\umldrawcolor}{black}
@@ -63,6 +65,8 @@
 	}
 }
 \date{ }	% defaults date to empty string
+\usepackage[ddmmyyyy]{datetime}	% for better \today formatting
+\renewcommand{\dateseparator}{.}
 
 \newcommand{\@taskText}{
 	\ifthenelse{\equal{\localename}{ngerman} \OR \equal{\localename}{german}}{Aufgabe}{Task}
@@ -127,6 +131,7 @@
 \makeatletter
 \newcommand{\singletask}{\@ifstar\@singletaskstar\@singletasknostar}
 \newcommand{\@singletasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -134,17 +139,21 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@singletaskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUser & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\partnertask}{\@ifstar\@partnertaskstar\@partnertasknostar}
 \newcommand{\@partnertasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -152,17 +161,21 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@partnertaskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUserFriends & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\grouptask}{\@ifstar\@grouptaskstar\@grouptasknostar}
 \newcommand{\@grouptasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -170,17 +183,21 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@grouptaskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUsers & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\task}{\@ifstar\@taskstar\@tasknostar}
 \newcommand{\@tasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -188,17 +205,21 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@taskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faUserPlus & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\bonustask}{\@ifstar\@bonustaskstar\@bonustasknostar}
 \newcommand{\@bonustasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -206,17 +227,21 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@bonustaskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faPlusCircle & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\testtask}{\@ifstar\@testtaskstar\@testtasknostar}
 \newcommand{\@testtasknostar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
@@ -224,18 +249,22 @@
 	\end{tabularx}
 	\stepcounter{taskcounter}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \newcommand{\@testtaskstar}[2][]{
+	\begingroup
 	\vspace*{.5cm}
 	\setlength{\tabcolsep}{0cm}
 	\begin{tabularx}{\textwidth}{p{1cm} X r}
 		\faDotCircle[regular] & \textbf{#2} & #1\\
 	\end{tabularx}
 	\vspace*{-.5cm}
+	\endgroup
 }
 \makeatother
 
 \newcommand{\warning}[2]{
+	\begingroup
 	\setlength{\tabcolsep}{.25cm}
 	\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{|m{15.5cm}|}
@@ -244,8 +273,10 @@
 		#2\\
 		\hline
 	\end{tabular}
+	\endgroup
 }
 \newcommand{\hint}[2]{
+	\begingroup
 	\setlength{\tabcolsep}{.25cm}
 	\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{|m{15.5cm}|}
@@ -254,10 +285,21 @@
 		#2\\
 		\hline
 	\end{tabular}
+	\endgroup
 }
 
 
 \newcommand{\faNoCalculator}{$\xcancel{\text{\faCalculator}}$}
+
+\newcommand{\timeLimit}[1]{{\faClock[regular]\ #1}}
+
+\newcommand{\qrlink}[2][3cm]{
+\begin{minipage}{4cm}
+	\centering
+	\qrcode[height=#1]{#2}\\[.25cm]
+	\tiny\url{#2}
+\end{minipage}
+}
 
 % Generates an empty box for students to write / draw on.
 % Default length is 4cm, but can be changed using a parameter
@@ -348,13 +390,13 @@
 	basicstyle=\ttfamily\small,
 	breaklines=true,
 	commentstyle=\color{gray},
-	keywordstyle=\bfseries\color{blue},
+	keywordstyle=\color{blue},
 	stringstyle=\color{red},
 	showstringspaces=false,
 	numbers=left,
 	frame=l,
 	tabsize=2,
-	literate=%
+	literate=
 	{Ö}{{\"O}}1
 	{Ä}{{\"A}}1
 	{Ü}{{\"U}}1
@@ -365,8 +407,17 @@
 	{~}{{\textasciitilde}}1
 }
 
+\lstdefinelanguage{json}{
+	morestring=[s]{"}{"},
+	morestring=[s]{'}{'},
+	otherkeywords={{,}, \{, \}, [, ], :}
+}
+
+
 \makeatletter
 \@ifclassloaded{beamer}{
+	\setbeamertemplate{section in toc}[sections numbered]
+	\setbeamertemplate{subsection in toc}[subsections numbered]
 	\usecolortheme[named=black]{structure}
 	\setbeamerfont{frametitle}{series=\bfseries}
 	\setbeamertemplate{navigation symbols}{}
@@ -376,11 +427,13 @@
 		\hrule
 		\vspace*{.25cm}
 		\textbf{\insertframetitle}
-		\par
-		\small\textbf{\insertframesubtitle}
+		\small\textbf{\\\insertframesubtitle}
 		\par
 		\vspace{.25cm}
 		\hrule
 	}
 }{}
 \makeatother
+
+
+\renewcommand{\arraystretch}{1.5}
