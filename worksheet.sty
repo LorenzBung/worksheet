@@ -1,4 +1,4 @@
-\ProvidesPackage{worksheet}[2025/09/05 Package to create worksheets and class tests for usage in schools]
+\ProvidesPackage{worksheet}[2026/01/22 Package to create worksheets and class tests for usage in schools]
 
 \RequirePackage{ifthen}	% for internal use
 \RequirePackage[onehalfspacing]{setspace}
@@ -16,6 +16,7 @@
 \RequirePackage{pdfpages}
 \RequirePackage{natbib}	%citation
 \@ifclassloaded{beamer}{}{
+	\RequirePackage[hyphens]{url}	% break URLs at hyphens into multiple lines
 	\RequirePackage[pagebackref=true]{hyperref}	% clickable links
 	\RequirePackage{titling}	% access to \theauthor etc.
 }
@@ -51,6 +52,8 @@
 \renewcommand{\umlfillcolor}{white}
 \renewcommand{\umldrawcolor}{black}
 \renewcommand{\vec}{\overrightarrow}	% better looking vector arrows for long vector names
+\providecommand{\dq}{}
+\renewcommand{\dq}{\char`\"}	% Double quotes, e.g. in \texttt environments
 
 \newcounter{taskcounter}
 \setcounter{taskcounter}{1}
@@ -264,27 +267,53 @@
 }
 \makeatother
 
-\newcommand{\warning}[2]{
+%\newcommand{\warning}[2]{
+%	\begingroup
+%	\setlength{\tabcolsep}{.25cm}
+%	\renewcommand{\arraystretch}{1.5}
+%	\begin{tabular}{|m{15.5cm}|}
+%		\hline
+%		\faExclamationTriangle \hspace{.5cm} {\textbf{#1}}\\
+%		#2\\
+%		\hline
+%	\end{tabular}
+%	\endgroup
+%}
+\newenvironment{warning}[1]{
 	\begingroup
 	\setlength{\tabcolsep}{.25cm}
 	\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{|m{15.5cm}|}
 		\hline
 		\faExclamationTriangle \hspace{.5cm} {\textbf{#1}}\\
-		#2\\
-		\hline
+}{
+	\\
+	\hline
 	\end{tabular}
 	\endgroup
 }
-\newcommand{\hint}[2]{
+%\newcommand{\hint}[2]{
+%	\begingroup
+%	\setlength{\tabcolsep}{.25cm}
+%	\renewcommand{\arraystretch}{1.5}
+%	\begin{tabular}{|m{15.5cm}|}
+%		\hline
+%		\faLightbulb[regular] \hspace{.55cm} {\textbf{#1}}\\
+%		#2\\
+%		\hline
+%	\end{tabular}
+%	\endgroup
+%}
+\newenvironment{hint}[1]{
 	\begingroup
 	\setlength{\tabcolsep}{.25cm}
 	\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{|m{15.5cm}|}
-		\hline
-		\faLightbulb[regular] \hspace{.55cm} {\textbf{#1}}\\
-		#2\\
-		\hline
+	\hline
+	\faLightbulb[regular] \hspace{.55cm} {\textbf{#1}}\\
+}{
+	\\
+	\hline
 	\end{tabular}
 	\endgroup
 }
@@ -357,8 +386,8 @@
 				grid=major,
 				xlabel={$x$},
 				ylabel={$y$},
-				xlabel style={below right},
-				ylabel style={above left},
+				xlabel style={above right},
+				ylabel style={above right},
 				#1]
 			}{
 			\end{axis}

@@ -17,8 +17,12 @@ The package provides several new commands:
   - `\bonustask{title}` creates a bonus task.
   - `\testtask{title}{points}` creates a class test task with a specific amount of points.
 - **Boxes**: There are two types of boxes used to show information:
-  - `\warning{title}{content}` denotes a warning
-  - `\hint{title}{content}` denotes a hint used to give additional information to the students
+  - ```\begin{warning}{title}
+  content
+\end{warning}``` denotes a warning
+  - ```\begin{hint}{title}
+  content
+\end{content}``` denotes a hint used to give additional information to the students
 - **Fields**: You can also create spaces for students to write or draw on.
   All areas default to a length of 5cm in case no argument is given.
   - `\checkered[length]` creates a checkered area with the given length.
